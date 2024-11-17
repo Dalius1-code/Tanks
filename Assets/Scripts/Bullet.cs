@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviour
 {
     public float speed = 15f;
     public float lifetime = 2f;
+    public static int damage = 10;
     // Start is called before the first frame update
     void Start()
     {
