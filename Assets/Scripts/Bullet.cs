@@ -1,22 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Windows;
 
 public class Bullet : MonoBehaviour
 {
-    public float speed = 15f;
-    public float lifetime = 2f;
+    public GameObject explosionPrefab;
     public static int damage = 10;
-    // Start is called before the first frame update
+    public float speed = 15f;
+    public float lifeTime = 2f;
+
     void Start()
     {
-        Destroy(gameObject,lifetime);
+        Invoke("SelfDestruct", lifeTime);
     }
 
-    // Update is called once per frame
     void Update()
     {
         transform.position += transform.forward * speed * Time.deltaTime;
+    }
+
+    private void OnCollisionEnter(Collision other) 
+    {
+        SelfDestruct();
+    }
+
+    void SelfDestruct()
+    {
+        Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 }

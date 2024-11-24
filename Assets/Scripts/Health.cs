@@ -1,31 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
-public class NewBehaviourScript : MonoBehaviour
+public class Health : MonoBehaviour
 {
-    public int MaxHealth = 100;
+    public int maxHealth = 100;
+    public Image bar;
+    public UnityEvent onDeath;
 
     int currentHealth;
 
-    public Image bar;
-
-    // Start is called before the first frame update
-    void Start()
+    private void Start() 
     {
-        currentHealth = MaxHealth;
+        currentHealth = maxHealth;
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool TakeDamage(int damage)
     {
-        
-    }
-    public void Takedamage(int damage)
-    {
+        if(damage < 0 && currentHealth == maxHealth)
+        {
+            return false; //didn't heal, because health is already full
+        }
+
         currentHealth -= damage;
-        bar.transform.localScale = new Vector3((float)currentHealth / MaxHealth / 1, 1);
+        currentHealth = Mathf.Max(0, currentHealth);
+       //currentHealth = currentHealth < 0 ? 0 : currentHealth;
+
+        bar.transform.localScale = new Vector3((float)currentHealth / maxHealth, 1, 1);
+
+        if(currentHealth == 0)
+        {
+            onDeath.Invoke();
+        }
+
+        return true;
     }
 }

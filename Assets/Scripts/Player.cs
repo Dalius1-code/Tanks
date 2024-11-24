@@ -4,61 +4,67 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public bool player1 = true;
 
-    public bool Player1  = true;
-    public bool Player2 = false;
     [Header("Movement")]
-
     public float speed = 10f;
 
     [Header("Shooting")]
     public GameObject bulletPrefab;
     public Transform bulletSpawn;
-
-
     public float fireRate = 0.5f;
-    private object other;
 
     [Header("Health")]
     public Health health;
-    // Start is called before the first frame update
+
+
     void Start()
     {
-        
+        InvokeRepeating("Shoot", 0, fireRate);
     }
 
-    // Update is called once per frame
+    void Shoot()
+    {
+        //todo:play sound
+        //todo:play animation
+        Instantiate(bulletPrefab, bulletSpawn.position, transform.rotation);
+    }
+
     void Update()
     {
         var input = new Vector3();
-        if(Player1)
+
+        if(player1)
         {
             input.x = Input.GetAxis("HorizontalKeys");
+            //input.y = transform.position.y;
             input.z = Input.GetAxis("VerticalKeys");
         }
-        if(Player2)
+        else
         {
             input.x = Input.GetAxis("HorizontalArrows");
+            //input.y = transform.position.y;
             input.z = Input.GetAxis("VerticalArrows");
         }
-
+        
 
         transform.position += input * speed * Time.deltaTime;
-        if(input != Vector3.zero)
-        {
+
+        if (input != Vector3.zero)
             transform.forward = input;
-        }
-        
     }
-    void shoot()
+
+    private void OnCollisionEnter(Collision other) 
     {
-        Instantiate(bulletPrefab, bulletSpawn.position, transform.rotation);
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (other.gameObject.Compare("Bullet")
+        if(other.gameObject.CompareTag("Bullet"))
         {
-            Health.Takedamage(Bullet.damage);
+            health.TakeDamage(Bullet.damage);
+        }
+        if(other.gameObject.CompareTag("Health"))
+        {
+            //negative damage = healing
+            if(health.TakeDamage(-10))
+                Destroy(other.gameObject);
         }
     }
 }
