@@ -21,7 +21,7 @@ public class Explodingbarrels : MonoBehaviour
     public void TakeExDamage(int explosicdamage)
     {
         currentHealth -= explosicdamage;
-        if (currentHealth < = 0)
+        if (currentHealth <= 0)
         {
 
         }

@@ -54,17 +54,17 @@ public class Player : MonoBehaviour
             transform.forward = input;
     }
 
-    private void OnCollisionEnter(Collision other) 
-    {
-        if(other.gameObject.CompareTag("Bullet"))
-        {
-            health.TakeDamage(Bullet.damage);
-        }
-        if(other.gameObject.CompareTag("Health"))
-        {
-            //negative damage = healing
-            if(health.TakeDamage(-10))
-                Destroy(other.gameObject);
-        }
-    }
+    //private void OnCollisionEnter(Collision other) 
+    //{
+    //    if(other.gameObject.CompareTag("Bullet"))
+    //    {
+    //        health.TakeDamage(Bullet.damage);
+    //    }
+    //    if(other.gameObject.CompareTag("Health"))
+    //    {
+    //        //negative damage = healing
+    //        if(health.TakeDamage(-10))
+    //            Destroy(other.gameObject);
+    //    }
+    //}
 }
